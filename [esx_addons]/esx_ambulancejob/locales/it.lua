@@ -1,9 +1,9 @@
 Locales['it'] = {
--- Spogliatoio
+  -- Spogliatoio
   ['cloakroom'] = 'Spogliatoio',
   ['ems_clothes_civil'] = 'Vestiti Civili',
   ['ems_clothes_ems'] = 'Vestiti EMS',
--- Veicoli
+  -- Veicoli
   ['ambulance'] = 'Ambulanza',
   ['helicopter_prompt'] = 'Premi [E] per accedere al garage dell\'Elicottero.',
   ['garage_prompt'] = 'Premi [E] per accedere al garage del Veicolo.',
@@ -29,7 +29,7 @@ Locales['it'] = {
   ['vehicleshop_awaiting_model'] = 'Il veicolo è attualmente in fase di DOWNLOAD & CARICAMENTO, attendi',
   ['confirm_no'] = 'No',
   ['confirm_yes'] = 'Sì',
--- Menu Azioni
+  -- Menu Azioni
   ['revive_inprogress'] = 'È in corso un tentativo di rianimazione!',
   ['revive_complete'] = 'Hai rianimato %s',
   ['revive_complete_award'] = 'Hai rianimato %s e guadagnato $%s!',
@@ -39,9 +39,9 @@ Locales['it'] = {
   ['no_players'] = 'Nessun giocatore nelle vicinanze',
   ['player_not_unconscious'] = 'Il giocatore non è incosciente!',
   ['player_not_conscious'] = 'Il giocatore non è cosciente!',
--- Menu Boss
+  -- Menu Boss
   ['boss_actions'] = 'Azioni del Boss',
--- Varie
+  -- Varie
   ['invalid_amount'] = 'Importo non valido',
   ['actions_prompt'] = 'Premi [E] per accedere alle opzioni dell\'Ambulanza.',
   ['deposit_amount'] = 'Importo del deposito',
@@ -54,7 +54,7 @@ Locales['it'] = {
   ['bandage'] = 'Benda',
   ['max_item'] = 'Hai già abbastanza oggetti.',
   ['unconscious_found'] = '[CENTRALINO]: È stata segnalata una persona priva di sensi',
--- Menu F6
+  -- Menu F6
   ['ems_menu'] = 'Menu EMS',
   ['ems_menu_title'] = 'Ambulanza - Menu EMS',
   ['ems_menu_revive'] = 'Rianima Giocatore',
@@ -62,25 +62,17 @@ Locales['it'] = {
   ['ems_menu_small'] = 'Cura ferite leggere',
   ['ems_menu_big'] = 'Tratta ferite gravi',
   ['ems_menu_search'] = 'Paziente non trovato',
--- Telefono
+  -- Telefono
   ['alert_ambulance'] = 'Chiedi l\'ambulanza',
--- Morte
-  ['respawn_available_in'] = 'Puoi rinascere tra %s minuti %s secondi',
-  ['respawn_bleedout_in'] = 'Sanguinerai a morte tra %s minuti %s secondi\n',
-  ['respawn_bleedout_prompt'] = 'Tieni premuto [E] per rinascere',
-  ['respawn_bleedout_fine'] = 'Tieni premuto [E] per rinascere per $%s',
-  ['respawn_bleedout_fine_msg'] = 'Hai pagato $%s per rinascere.',
-  ['distress_send'] = 'Premi [G] per inviare un segnale di emergenza',
-  ['distress_sent'] = 'Il segnale di emergenza è stato inviato alle unità disponibili!',
--- Rianimazione
+  -- Rianimazione
   ['revive_help'] = 'rianima un giocatore',
--- Oggetto
+  -- Oggetto
   ['used_medikit'] = 'Hai usato 1x medikit',
   ['used_bandage'] = 'Hai usato 1x benda',
   ['not_enough_medikit'] = 'Non hai il medikit.',
   ['not_enough_bandage'] = 'Non hai la benda.',
   ['healed'] = 'Sei stato curato.',
--- Blip
+  -- Blip
   ['blip_hospital'] = 'Ospedale',
   ['blip_dead'] = 'Giocatore morente',
 }
