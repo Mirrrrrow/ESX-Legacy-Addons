@@ -1,106 +1,97 @@
+IsSearched, Medic = false, false
+IsDead = false
+
 local firstSpawn = true
-isDead, isSearched, medic = false, false, 0
 
-RegisterNetEvent('esx:playerLoaded')
-AddEventHandler('esx:playerLoaded', function(xPlayer)
-  ESX.PlayerLoaded = true
-end)
-
-RegisterNetEvent('esx:onPlayerLogout')
-AddEventHandler('esx:onPlayerLogout', function()
-  ESX.PlayerLoaded = false
-  firstSpawn = true
+RegisterNetEvent('esx:onPlayerLogout', function()
+    firstSpawn = true
 end)
 
 AddEventHandler('esx:onPlayerSpawn', function()
-  if firstSpawn then
-    firstSpawn = false
-    return
-  end
-  isDead = false
+    if firstSpawn then
+        firstSpawn = false
+        return
+    end
+
+    IsDead = false
 end)
 
-AddEventHandler('esx:onPlayerDeath', function(data)
-  isDead = true
+AddEventHandler('esx:onPlayerDeath', function()
+    IsDead = true
 end)
 
 -- Create blips
 CreateThread(function()
-  for k, v in pairs(Config.Hospitals) do
-    local blip = AddBlipForCoord(v.Blip.coords)
+    if Config.LoadIpl then
+        RequestIpl('Coroner_Int_on')
+    end
 
-    SetBlipSprite(blip, v.Blip.sprite)
-    SetBlipScale(blip, v.Blip.scale)
-    SetBlipColour(blip, v.Blip.color)
-    SetBlipAsShortRange(blip, true)
+    for i = 1, #Config.Hospitals do
+        local hospital = Config.Hospitals[i]
+        local coords = hospital.Blip.coords
+        local blip = AddBlipForCoord(coords.x, coords.y, coords.z)
 
-    BeginTextCommandSetBlipName('STRING')
-    AddTextComponentSubstringPlayerName(TranslateCap('blip_hospital'))
-    EndTextCommandSetBlipName(blip)
-  end
+        SetBlipSprite(blip, hospital.Blip.sprite)
+        SetBlipScale(blip, hospital.Blip.scale)
+        SetBlipColour(blip, hospital.Blip.color)
+        SetBlipAsShortRange(blip, true)
+
+        BeginTextCommandSetBlipName('STRING')
+        AddTextComponentSubstringPlayerName(TranslateCap('blip_hospital'))
+        EndTextCommandSetBlipName(blip)
+    end
 end)
 
-RegisterNetEvent('esx_ambulancejob:clsearch')
-AddEventHandler('esx_ambulancejob:clsearch', function(medicId)
-  local playerPed = PlayerPedId()
+RegisterNetEvent('esx_ambulancejob:clsearch', function(medicId)
+    if not IsDead then return end
 
-  if isDead then
-    local coords = GetEntityCoords(playerPed)
+    local coords = GetEntityCoords(ESX.PlayerData.ped)
     local playersInArea = ESX.Game.GetPlayersInArea(coords, 50.0)
 
     for i = 1, #playersInArea, 1 do
-      local player = playersInArea[i]
-      if player == GetPlayerFromServerId(medicId) then
-        medic = tonumber(medicId)
-        isSearched = true
-        break
-      end
+        local player = playersInArea[i]
+        if player == GetPlayerFromServerId(medicId) then
+            MedicPlayerId = tonumber(medicId)
+            IsSearched = true
+            break
+        end
     end
-  end
 end)
 
-RegisterNetEvent('esx_ambulancejob:useItem')
-AddEventHandler('esx_ambulancejob:useItem', function(itemName)
-  ESX.CloseContext()
+RegisterNetEvent('esx_ambulancejob:useItem', function(itemName)
+    ESX.CloseContext()
 
-  if itemName == 'medikit' then
-    local lib, anim = 'anim@heists@narcotics@funding@gang_idle', 'gang_chatting_idle01' -- TODO better animations
-    local playerPed = PlayerPedId()
+    if itemName == 'medikit' then
+        local lib, anim = 'anim@heists@narcotics@funding@gang_idle', 'gang_chatting_idle01' -- TODO better animations
 
-    ESX.Streaming.RequestAnimDict(lib, function()
-      TaskPlayAnim(playerPed, lib, anim, 8.0, -8.0, -1, 0, 0, false, false, false)
-      RemoveAnimDict(lib)
+        ESX.Streaming.RequestAnimDict(lib, function()
+            TaskPlayAnim(ESX.PlayerData.ped, lib, anim, 8.0, -8.0, -1, 0, 0, false, false, false)
+            RemoveAnimDict(lib)
 
-      Wait(500)
-      while IsEntityPlayingAnim(playerPed, lib, anim, 3) do
-        Wait(0)
-        DisableAllControlActions(0)
-      end
+            Wait(500)
+            while IsEntityPlayingAnim(ESX.PlayerData.ped, lib, anim, 3) do
+                Wait(0)
+                DisableAllControlActions(0)
+            end
 
-      TriggerEvent('esx_ambulancejob:heal', 'big', true)
-      ESX.ShowNotification(TranslateCap('used_medikit'))
-    end)
-  elseif itemName == 'bandage' then
-    local lib, anim = 'anim@heists@narcotics@funding@gang_idle', 'gang_chatting_idle01' -- TODO better animations
-    local playerPed = PlayerPedId()
+            TriggerEvent('esx_ambulancejob:heal', 'big', true)
+            ESX.ShowNotification(TranslateCap('used_medikit'))
+        end)
+    elseif itemName == 'bandage' then
+        local lib, anim = 'anim@heists@narcotics@funding@gang_idle', 'gang_chatting_idle01' -- TODO better animations
 
-    ESX.Streaming.RequestAnimDict(lib, function()
-      TaskPlayAnim(playerPed, lib, anim, 8.0, -8.0, -1, 0, 0, false, false, false)
-      RemoveAnimDict(lib)
+        ESX.Streaming.RequestAnimDict(lib, function()
+            TaskPlayAnim(ESX.PlayerData.ped, lib, anim, 8.0, -8.0, -1, 0, 0, false, false, false)
+            RemoveAnimDict(lib)
 
-      Wait(500)
-      while IsEntityPlayingAnim(playerPed, lib, anim, 3) do
-        Wait(0)
-        DisableAllControlActions(0)
-      end
+            Wait(500)
+            while IsEntityPlayingAnim(ESX.PlayerData.ped, lib, anim, 3) do
+                Wait(0)
+                DisableAllControlActions(0)
+            end
 
-      TriggerEvent('esx_ambulancejob:heal', 'small', true)
-      ESX.ShowNotification(TranslateCap('used_bandage'))
-    end)
-  end
+            TriggerEvent('esx_ambulancejob:heal', 'small', true)
+            ESX.ShowNotification(TranslateCap('used_bandage'))
+        end)
+    end
 end)
-
--- Load unloaded IPLs
-if Config.LoadIpl then
-  RequestIpl('Coroner_Int_on') -- Morgue
-end
